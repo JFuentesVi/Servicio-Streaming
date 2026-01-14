@@ -1,0 +1,28 @@
+# Compiled class files
+bin/
+*.class
+
+# Persistence data
+datos/
+
+# System files
+.DS_Store
+**/.DS_Store
+
+# IDE
+.vscode/
+!.vscode/settings.json
+.idea/
+*.iml
+
+# Log files
+*.log
+
+# Package files
+*.jar
+!lib/*.jar
+
+# Temporary files
+*.tmp
+*.swp
+*~
