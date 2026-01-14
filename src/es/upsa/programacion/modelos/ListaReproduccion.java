@@ -5,10 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Lista de reproducción que puede mezclar canciones y podcasts.
- */
-public class ListaReproduccion {
+
+public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef>, Cloneable {
     public enum TipoItem {
         CANCION, PODCAST
     }
@@ -63,6 +61,20 @@ public class ListaReproduccion {
 
     public List<ItemRef> getItems() {
         return new ArrayList<>(items);
+    }
+
+    @Override
+    public java.util.Iterator<ItemRef> iterator() {
+        return getItems().iterator();
+    }
+
+    @Override
+    public ListaReproduccion clone() {
+        ListaReproduccion copia = new ListaReproduccion(this.id, this.nombre, this.ownerId);
+        for (ItemRef ref : this.items) {
+            copia.addItem(ref.getTipo(), ref.getRefId());
+        }
+        return copia;
     }
 
     public boolean addItem(TipoItem tipo, int refId) {

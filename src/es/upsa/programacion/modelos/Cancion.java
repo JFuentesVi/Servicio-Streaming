@@ -1,15 +1,11 @@
 package es.upsa.programacion.modelos;
 
-/**
- * Cancion hereda de MediaItem e implementa Reproducible para demostrar
- * herencia e interfaces en el dominio.
- */
-public class Cancion extends MediaItem {
+public class Cancion extends ItemMultimedia {
     private String artista;
     private String album;
 
-    public Cancion(int id, String titulo, String artista, String album, int duracionSeg, String genero, int anno) {
-        super(id, titulo, duracionSeg, genero, anno);
+    public Cancion(int id, String titulo, String artista, String album, int duracionSeg, String genero, int anno, String rutaArchivo) {
+        super(id, titulo, duracionSeg, genero, anno, rutaArchivo);
         this.artista = artista;
         this.album = album;
     }

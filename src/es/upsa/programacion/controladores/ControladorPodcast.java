@@ -6,9 +6,6 @@ import java.util.List;
 import es.upsa.programacion.modelos.Podcast;
 import es.upsa.programacion.servicios.PersistenciaJSON;
 
-/**
- * CRUD y búsquedas en memoria para podcasts con persistencia.
- */
 public class ControladorPodcast {
     private final List<Podcast> podcasts;
     private PersistenciaJSON persistencia;
@@ -18,17 +15,19 @@ public class ControladorPodcast {
         this.podcasts = new ArrayList<>(persistencia.cargarPodcasts());
     }
 
+    // Métodos para crear, buscar, modificar y eliminar podcasts
+
     public boolean crearPodcast(int id, String titulo, String anfitrion, String categoria, String descripcion,
-            int duracionSeg, String genero, int anno) {
-        if (buscarPodcast(id) == null) {
-            podcasts.add(new Podcast(id, titulo, anfitrion, categoria, descripcion, duracionSeg, genero, anno));
+            int duracionSeg, String genero, int anno, String rutaArchivo) {
+        if (buscarPorId(id) == null) {
+            podcasts.add(new Podcast(id, titulo, anfitrion, categoria, descripcion, duracionSeg, genero, anno, rutaArchivo));
             persistencia.guardarPodcasts(podcasts);
             return true;
         }
         return false;
     }
 
-    public Podcast buscarPodcast(int id) {
+    public Podcast buscarPorId(int id) {
         for (Podcast podcast : podcasts) {
             if (podcast.getId() == id) {
                 return podcast;
@@ -37,12 +36,11 @@ public class ControladorPodcast {
         return null;
     }
 
-    // Búsquedas avanzadas
     public List<Podcast> buscarPorTitulo(String filtro) {
         List<Podcast> resultado = new ArrayList<>();
-        for (Podcast p : podcasts) {
-            if (p.getTitulo().toLowerCase().contains(filtro.toLowerCase())) {
-                resultado.add(p);
+        for (Podcast podcast : podcasts) {
+            if (podcast.getTitulo().toLowerCase().contains(filtro.toLowerCase())) {
+                resultado.add(podcast);
             }
         }
         return resultado;
@@ -50,9 +48,9 @@ public class ControladorPodcast {
 
     public List<Podcast> buscarPorAnfitrion(String filtro) {
         List<Podcast> resultado = new ArrayList<>();
-        for (Podcast p : podcasts) {
-            if (p.getAnfitrion().toLowerCase().contains(filtro.toLowerCase())) {
-                resultado.add(p);
+        for (Podcast podcast : podcasts) {
+            if (podcast.getAnfitrion().toLowerCase().contains(filtro.toLowerCase())) {
+                resultado.add(podcast);
             }
         }
         return resultado;
@@ -60,9 +58,9 @@ public class ControladorPodcast {
 
     public List<Podcast> buscarPorCategoria(String filtro) {
         List<Podcast> resultado = new ArrayList<>();
-        for (Podcast p : podcasts) {
-            if (p.getCategoria().toLowerCase().contains(filtro.toLowerCase())) {
-                resultado.add(p);
+        for (Podcast podcast : podcasts) {
+            if (podcast.getCategoria().toLowerCase().contains(filtro.toLowerCase())) {
+                resultado.add(podcast);
             }
         }
         return resultado;
@@ -70,9 +68,9 @@ public class ControladorPodcast {
 
     public List<Podcast> buscarPorGenero(String filtro) {
         List<Podcast> resultado = new ArrayList<>();
-        for (Podcast p : podcasts) {
-            if (p.getGenero().toLowerCase().contains(filtro.toLowerCase())) {
-                resultado.add(p);
+        for (Podcast podcast : podcasts) {
+            if (podcast.getGenero().toLowerCase().contains(filtro.toLowerCase())) {
+                resultado.add(podcast);
             }
         }
         return resultado;
@@ -80,35 +78,36 @@ public class ControladorPodcast {
 
     public List<Podcast> buscarPorAnno(int anno) {
         List<Podcast> resultado = new ArrayList<>();
-        for (Podcast p : podcasts) {
-            if (p.getAnno() == anno) {
-                resultado.add(p);
+        for (Podcast podcast : podcasts) {
+            if (podcast.getAnno() == anno) {
+                resultado.add(podcast);
             }
         }
         return resultado;
     }
 
     public int modificarPodcast(int id, String titulo, String anfitrion, String categoria, String descripcion,
-            int duracionSeg, String genero, int anno) {
-        Podcast p = buscarPodcast(id);
-        if (p == null) {
+            int duracionSeg, String genero, int anno, String rutaArchivo) {
+        Podcast podcast = buscarPorId(id);
+        if (podcast == null) {
             return 0;
         }
-        p.setTitulo(titulo);
-        p.setAnfitrion(anfitrion);
-        p.setCategoria(categoria);
-        p.setDescripcion(descripcion);
-        p.setDuracionSeg(duracionSeg);
-        p.setGenero(genero);
-        p.setAnno(anno);
+        podcast.setTitulo(titulo);
+        podcast.setAnfitrion(anfitrion);
+        podcast.setCategoria(categoria);
+        podcast.setDescripcion(descripcion);
+        podcast.setDuracionSeg(duracionSeg);
+        podcast.setGenero(genero);
+        podcast.setAnno(anno);
+        podcast.setRutaArchivo(rutaArchivo);
         persistencia.guardarPodcasts(podcasts);
         return 1;
     }
 
     public int eliminarPodcast(int id) {
-        Podcast p = buscarPodcast(id);
-        if (p != null) {
-            podcasts.remove(p);
+        Podcast podcast = buscarPorId(id);
+        if (podcast != null) {
+            podcasts.remove(podcast);
             persistencia.guardarPodcasts(podcasts);
             return 1;
         }

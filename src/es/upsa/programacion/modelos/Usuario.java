@@ -1,19 +1,16 @@
 package es.upsa.programacion.modelos;
 
-/**
- * Usuario básico con rol para control de acceso en el CLI.
- */
 public class Usuario {
     private final int id;
     private String nombre;
-    private String email;
+    private String nombreUsuario;
     private String passwordPlano;
     private Rol rol;
 
-    public Usuario(int id, String nombre, String email, String passwordPlano, Rol rol) {
+    public Usuario(int id, String nombre, String nombreUsuario, String passwordPlano, Rol rol) {
         this.id = id;
         this.nombre = nombre;
-        this.email = email;
+        this.nombreUsuario = nombreUsuario;
         this.passwordPlano = passwordPlano;
         this.rol = rol;
     }
@@ -30,12 +27,16 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getPassword() {
+        return passwordPlano;
     }
 
     public Rol getRol() {

@@ -7,41 +7,38 @@ import es.upsa.programacion.modelos.Rol;
 import es.upsa.programacion.modelos.Usuario;
 import es.upsa.programacion.servicios.PersistenciaJSON;
 
-/**
- * Gestión básica de usuarios en memoria con autenticación simple y persistencia.
- */
 public class ControladorUsuario {
-    private final Map<String, Usuario> usuariosPorEmail;
+    private final Map<String, Usuario> usuariosPorNombre;
     private int secuenciaId = 1;
     private PersistenciaJSON persistencia;
 
     public ControladorUsuario(PersistenciaJSON persistencia) {
         this.persistencia = persistencia;
-        this.usuariosPorEmail = new HashMap<>(persistencia.cargarUsuarios());
-        // Calcular secuencia desde datos cargados
-        for (Usuario u : usuariosPorEmail.values()) {
+        this.usuariosPorNombre = new HashMap<>(persistencia.cargarUsuarios());
+        for (Usuario u : usuariosPorNombre.values()) {
             if (u.getId() >= secuenciaId) {
                 secuenciaId = u.getId() + 1;
             }
         }
-        // Se crea un admin por defecto si no existe
-        if (!usuariosPorEmail.containsKey("admin@cli")) {
-            registrar("admin", "admin@cli", "admin", Rol.ADMIN);
+        if (!usuariosPorNombre.containsKey("admin")) {
+            registrar("admin", "admin", "admin", Rol.ADMIN);
         }
     }
 
-    public Usuario registrar(String nombre, String email, String password, Rol rol) {
-        if (usuariosPorEmail.containsKey(email)) {
+    // Métodos para registrar y autenticar usuarios
+
+    public Usuario registrar(String nombre, String nombreUsuario, String password, Rol rol) {
+        if (usuariosPorNombre.containsKey(nombreUsuario)) {
             return null;
         }
-        Usuario u = new Usuario(secuenciaId++, nombre, email, password, rol);
-        usuariosPorEmail.put(email, u);
-        persistencia.guardarUsuarios(usuariosPorEmail);
+        Usuario u = new Usuario(secuenciaId++, nombre, nombreUsuario, password, rol);
+        usuariosPorNombre.put(nombreUsuario, u);
+        persistencia.guardarUsuarios(usuariosPorNombre);
         return u;
     }
 
-    public Usuario login(String email, String password) {
-        Usuario u = usuariosPorEmail.get(email);
+    public Usuario login(String nombreUsuario, String password) {
+        Usuario u = usuariosPorNombre.get(nombreUsuario);
         if (u != null && u.validarPassword(password)) {
             return u;
         }

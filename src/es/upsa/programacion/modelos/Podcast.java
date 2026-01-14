@@ -1,16 +1,13 @@
 package es.upsa.programacion.modelos;
 
-/**
- * Podcast también hereda de MediaItem para reutilizar metadatos comunes.
- */
-public class Podcast extends MediaItem {
+public class Podcast extends ItemMultimedia {
     private String anfitrion;
     private String categoria;
     private String descripcion;
 
     public Podcast(int id, String titulo, String anfitrion, String categoria, String descripcion, int duracionSeg,
-            String genero, int anno) {
-        super(id, titulo, duracionSeg, genero, anno);
+            String genero, int anno, String rutaArchivo) {
+        super(id, titulo, duracionSeg, genero, anno, rutaArchivo);
         this.anfitrion = anfitrion;
         this.categoria = categoria;
         this.descripcion = descripcion;
