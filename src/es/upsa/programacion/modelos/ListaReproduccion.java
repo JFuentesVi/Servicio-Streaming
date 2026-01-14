@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef>, Cloneable {
+public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef> {
     public enum TipoItem {
         CANCION, PODCAST
     }
@@ -66,15 +66,6 @@ public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef>, C
     @Override
     public java.util.Iterator<ItemRef> iterator() {
         return getItems().iterator();
-    }
-
-    @Override
-    public ListaReproduccion clone() {
-        ListaReproduccion copia = new ListaReproduccion(this.id, this.nombre, this.ownerId);
-        for (ItemRef ref : this.items) {
-            copia.addItem(ref.getTipo(), ref.getRefId());
-        }
-        return copia;
     }
 
     public boolean addItem(TipoItem tipo, int refId) {
