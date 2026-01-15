@@ -8,7 +8,6 @@ import es.upsa.programacion.modelos.ListaReproduccion;
 import es.upsa.programacion.modelos.Reproducible;
 import es.upsa.programacion.servicios.ReproductorAudio;
 
-
 public class ControladorReproductor {
     public enum EstadoReproductor {
         STOPPED, PLAYING, PAUSED
@@ -30,7 +29,8 @@ public class ControladorReproductor {
         this.audioPlayer = new ReproductorAudio();
     }
 
-    // Métodos para controlar la reproducción: play, pause, next, previous, cargar lista, etc.
+    // Métodos para controlar la reproducción: play, pause, next, previous, cargar
+    // lista, etc.
 
     public String reproducirItem(ListaReproduccion.ItemRef ref) {
         cola.clear();
@@ -98,13 +98,24 @@ public class ControladorReproductor {
         return "No hay nada pausado";
     }
 
+    public String detener() {
+        if (estado == EstadoReproductor.PLAYING || estado == EstadoReproductor.PAUSED) {
+            audioPlayer.detener();
+            estado = EstadoReproductor.STOPPED;
+            cola.clear();
+            indiceActual = -1;
+            return "Reproducción detenida";
+        }
+        return "No hay nada en reproducción";
+    }
+
     public String playActual() {
         Reproducible rep = obtenerActual();
         if (rep == null) {
             return "Cola vacía";
         }
         estado = EstadoReproductor.PLAYING;
-        
+
         if (rep instanceof es.upsa.programacion.modelos.ItemMultimedia) {
             es.upsa.programacion.modelos.ItemMultimedia media = (es.upsa.programacion.modelos.ItemMultimedia) rep;
             String rutaArchivo = media.getRutaArchivo();
@@ -117,7 +128,7 @@ public class ControladorReproductor {
                 }
             }
         }
-        
+
         return rep.play();
     }
 
@@ -137,4 +148,3 @@ public class ControladorReproductor {
     }
 
 }
-

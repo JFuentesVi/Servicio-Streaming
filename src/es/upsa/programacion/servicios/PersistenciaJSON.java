@@ -50,9 +50,8 @@ public class PersistenciaJSON {
                 JSONObject obj = new JSONObject();
                 obj.put("id", cancion.getId());
                 obj.put("titulo", cancion.getTitulo());
-                obj.put("artista", cancion.getArtista());
+                obj.put("autor", cancion.getAutor());
                 obj.put("album", cancion.getAlbum());
-                obj.put("duracionSeg", cancion.getDuracionSeg());
                 obj.put("genero", cancion.getGenero());
                 obj.put("anno", cancion.getAnno());
                 obj.put("rutaArchivo", cancion.getRutaArchivo());
@@ -75,15 +74,13 @@ public class PersistenciaJSON {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 Cancion cancion = new Cancion(
-                    obj.getInt("id"),
-                    obj.getString("titulo"),
-                    obj.getString("artista"),
-                    obj.getString("album"),
-                    obj.getInt("duracionSeg"),
-                    obj.getString("genero"),
-                    obj.getInt("anno"),
-                    obj.optString("rutaArchivo", null)
-                );
+                        obj.getInt("id"),
+                        obj.getString("titulo"),
+                        obj.optString("autor", obj.optString("artista", "")),
+                        obj.getString("album"),
+                        obj.getString("genero"),
+                        obj.getInt("anno"),
+                        obj.optString("rutaArchivo", null));
                 resultado.add(cancion);
             }
         } catch (Exception e) {
@@ -101,10 +98,9 @@ public class PersistenciaJSON {
                 JSONObject obj = new JSONObject();
                 obj.put("id", podcast.getId());
                 obj.put("titulo", podcast.getTitulo());
-                obj.put("anfitrion", podcast.getAnfitrion());
-                obj.put("categoria", podcast.getCategoria());
+                obj.put("autor", podcast.getAutor());
+                obj.put("temporada", podcast.getAlbum());
                 obj.put("descripcion", podcast.getDescripcion());
-                obj.put("duracionSeg", podcast.getDuracionSeg());
                 obj.put("genero", podcast.getGenero());
                 obj.put("anno", podcast.getAnno());
                 obj.put("rutaArchivo", podcast.getRutaArchivo());
@@ -127,16 +123,14 @@ public class PersistenciaJSON {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 Podcast p = new Podcast(
-                    obj.getInt("id"),
-                    obj.getString("titulo"),
-                    obj.getString("anfitrion"),
-                    obj.getString("categoria"),
-                    obj.getString("descripcion"),
-                    obj.getInt("duracionSeg"),
-                    obj.getString("genero"),
-                    obj.getInt("anno"),
-                    obj.optString("rutaArchivo", null)
-                );
+                        obj.getInt("id"),
+                        obj.getString("titulo"),
+                        obj.optString("autor", obj.optString("anfitrion", "")),
+                        obj.optString("temporada", ""),
+                        obj.getString("descripcion"),
+                        obj.getString("genero"),
+                        obj.getInt("anno"),
+                        obj.optString("rutaArchivo", null));
                 resultado.add(p);
             }
         } catch (Exception e) {
@@ -156,7 +150,7 @@ public class PersistenciaJSON {
                 usuarioObj.put("id", usuario.getId());
                 usuarioObj.put("nombre", usuario.getNombre());
                 usuarioObj.put("nombreUsuario", usuario.getNombreUsuario());
-                usuarioObj.put("passwordPlano", usuario.getPassword());
+                usuarioObj.put("contrasenna", usuario.getContrasenna());
                 usuarioObj.put("rol", usuario.getRol().toString());
                 obj.put(entry.getKey(), usuarioObj);
             }
@@ -177,12 +171,11 @@ public class PersistenciaJSON {
             for (String nombreUsuario : obj.keySet()) {
                 JSONObject usuarioObj = obj.getJSONObject(nombreUsuario);
                 Usuario usuario = new Usuario(
-                    usuarioObj.getInt("id"),
-                    usuarioObj.getString("nombre"),
-                    usuarioObj.getString("nombreUsuario"),
-                    usuarioObj.getString("passwordPlano"),
-                    Rol.valueOf(usuarioObj.getString("rol"))
-                );
+                        usuarioObj.getInt("id"),
+                        usuarioObj.getString("nombre"),
+                        usuarioObj.getString("nombreUsuario"),
+                        usuarioObj.getString("contrasenna"),
+                        Rol.valueOf(usuarioObj.getString("rol")));
                 resultado.put(nombreUsuario, usuario);
             }
         } catch (Exception e) {
@@ -202,7 +195,7 @@ public class PersistenciaJSON {
                 listaObj.put("id", lista.getId());
                 listaObj.put("nombre", lista.getNombre());
                 listaObj.put("ownerId", lista.getOwnerId());
-                
+
                 JSONArray itemsArr = new JSONArray();
                 for (ListaReproduccion.ItemRef referencia : lista.getItems()) {
                     JSONObject refObj = new JSONObject();
@@ -232,9 +225,9 @@ public class PersistenciaJSON {
                 int id = listaObj.getInt("id");
                 String nombre = listaObj.getString("nombre");
                 int ownerId = listaObj.getInt("ownerId");
-                
+
                 ListaReproduccion lista = new ListaReproduccion(id, nombre, ownerId);
-                
+
                 JSONArray itemsArr = listaObj.getJSONArray("items");
                 for (int i = 0; i < itemsArr.length(); i++) {
                     JSONObject refObj = itemsArr.getJSONObject(i);
@@ -242,7 +235,7 @@ public class PersistenciaJSON {
                     int refId = refObj.getInt("refId");
                     lista.addItem(tipo, refId);
                 }
-                
+
                 resultado.put(id, lista);
             }
         } catch (Exception e) {
@@ -251,7 +244,8 @@ public class PersistenciaJSON {
         return resultado;
     }
 
-    // Metodos de lectura/escritura
+    // Métodos de lectura/escritura
+
     private String leerArchivo(String ruta) {
         File file = new File(ruta);
         if (!file.exists()) {

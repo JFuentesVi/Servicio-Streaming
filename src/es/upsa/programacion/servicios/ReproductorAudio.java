@@ -31,17 +31,17 @@ public class ReproductorAudio {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
-            
+
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     estaReproduciendo = false;
                 }
             });
-            
+
             clip.start();
             estaReproduciendo = true;
             System.out.println("▶ Reproduciendo: " + rutaArchivo);
-            
+
         } catch (UnsupportedAudioFileException e) {
             System.err.println("Formato de audio no soportado: " + e.getMessage());
             System.err.println("Soportados: WAV, AU, AIFF");
@@ -86,23 +86,5 @@ public class ReproductorAudio {
 
     public boolean estaPausado() {
         return pausaEnPosicion != null;
-    }
-
-    public String getArchivoActual() {
-        return archivoActual;
-    }
-
-    public long getPosicionActual() {
-        if (clip != null) {
-            return clip.getMicrosecondPosition() / 1000000; // Convertir a segundos
-        }
-        return 0;
-    }
-
-    public long getDuracionTotal() {
-        if (clip != null) {
-            return clip.getMicrosecondLength() / 1000000; // Convertir a segundos
-        }
-        return 0;
     }
 }

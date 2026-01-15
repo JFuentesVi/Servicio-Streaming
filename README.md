@@ -2,15 +2,17 @@
 
 ## 📋 Descripción
 
-Aplicación CLI en Java para gestionar y reproducir música y podcasts. Permite crear usuarios, organizar contenido multimedia, crear listas de reproducción y reproducir audio local.
+Esta es una aplicación CLI en Java para gestionar y reproducir música y podcasts. Permite crear usuarios, organizar contenido multimedia, crear listas de reproducción y reproducir audio local.
+No incluye reproducción automática por lo que tras acabar una canción se deberá de pasar manualmente a la siguiente.
 
 ## ✨ Funcionalidades
 
 ### 🎵 Gestión de Contenido
 
-- Catálogo de canciones (título, artista, álbum, duración, género, año, ruta)
-- Catálogo de podcasts (título, anfitrión, categoría, descripción, ruta)
-- Búsqueda por título, artista o género
+- Catálogo de canciones (título, artista, álbum, género, año, ruta)
+- Catálogo de podcasts (título, host, temporada, descripción, género, año, ruta)
+- Búsquedas unificadas por metadatos: título, autor, álbum/temporada, género, año
+- Búsqueda global en todos los campos de texto
 - Ordenamiento alfabético automático
 
 ### 👥 Sistema de Usuarios
@@ -31,20 +33,14 @@ Aplicación CLI en Java para gestionar y reproducir música y podcasts. Permite 
 - Controles: play, pausa, siguiente, anterior
 - Cola de reproducción con navegación
 
-## Casos de Uso
-
-**Autenticación y Gestión de Usuarios:**
-
-- CU1: Registrarse como nuevo usuario (nombre, nombre de usuario, contraseña).
-- CU2: Iniciar sesión con credenciales (nombre de usuario y contraseña).
-- C🏗️ Arquitectura
+## 🏗️ Arquitectura
 
 **Patrón MVC:**
 
-- **Modelos**: `Usuario`, `Cancion`, `Podcast`, `ListaReproduccion`
-- **Controladores**: lógica de negocio para cada entidad
-- **Vista**: interfaz CLI (`App.java`)
-- **Servicios**: persistencia JSON y reproducción de audio
+- **Modelos**: `Usuario`, `ItemMultimedia` (abstracta), `Cancion`, `Podcast`, `ListaReproduccion`
+- **Controladores**: `ControladorMultimedia` (base genérica), `ControladorCancion`, `ControladorPodcast`, `ControladorUsuario`, `ControladorLista`, `ControladorReproductor`
+- **Vista**: menús CLI modulares (`MenuGeneral`, `MenuUsuario`, `MenuAdmin`)
+- **Servicios**: `PersistenciaJSON`, `ReproductorAudio`
 
 **Estructura:**
 
@@ -52,8 +48,27 @@ Aplicación CLI en Java para gestionar y reproducir música y podcasts. Permite 
 src/
 ├── App.java                    # CLI principal
 ├── modelos/                    # Entidades de dominio
+│   ├── ItemMultimedia.java     # Clase abstracta base
+│   ├── Cancion.java
+│   ├── Podcast.java
+│   ├── Usuario.java
+│   ├── ListaReproduccion.java
+│   ├── Rol.java
+│   └── Reproducible.java
 ├── controladores/              # Lógica de negocio
+│   ├── ControladorMultimedia.java  # Controlador genérico base
+│   ├── ControladorCancion.java
+│   ├── ControladorPodcast.java
+│   ├── ControladorUsuario.java
+│   ├── ControladorLista.java
+│   └── ControladorReproductor.java
+├── menus/                      # Interfaz CLI modular
+│   ├── MenuGeneral.java
+│   ├── MenuUsuario.java
+│   └── MenuAdmin.java
 └── servicios/                  # Persistencia y audio
+    ├── PersistenciaJSON.java
+    └── ReproductorAudio.java
 
 datos/                          # Archivos JSON
 ```
@@ -67,21 +82,27 @@ datos/                          # Archivos JSON
 ## 📖 Casos de Uso
 
 **Usuarios (3):** Registro, Login, Logout  
-**Canciones (5):** Añadir, Buscar, Listar, Modificar, Eliminar  
-**Podcasts (5):** Añadir, Buscar, Listar, Modificar, Eliminar  
+**Canciones (6):** Añadir, Buscar (por id/título/artista/álbum/género/año), Listar, Modificar, Eliminar  
+**Podcasts (6):** Añadir, Buscar (por id/título/host/temporada/género/año), Listar, Modificar, Eliminar  
 **Listas (5):** Crear, Ver, Añadir items, Ver contenido, Eliminar  
-**Reproducción (4):** Reproducir, Controles, Ver progreso, Detener: clases de dominio que representan usuarios, medios, listas.
+**Reproducción (5):** Reproducir, Pausar, Reanudar, Anterior, Siguiente, Detener
 
-- **Controladores** (`es.upsa.programacion.controladores`): gestionan la lógica de negocio y operaciones.
-- 📚 Diseño Técnico
+## 📚 Diseño Técnico
 
 **Conceptos aplicados:**
 
-- **Herencia**: `Cancion` y `Podcast` extienden `MediaItem`
-- **Interfaces**: `Reproducible` para polimorfismo
+- **Herencia**: `Cancion` y `Podcast` extienden `ItemMultimedia` (clase abstracta)
+- **Generics**: `ControladorMultimedia<T extends ItemMultimedia>` proporciona búsquedas genéricas
+- **Interfaces**: `Reproducible` define `play()`, `pause()`, `stop()` permitiendo tratar canciones y podcasts de forma uniforme
 - **Comparable**: ordenamiento natural por título
 - **Iterable**: iteración sobre items de listas
-- **Genéricos**: `ordenarYMostrar(List<T extends MediaItem>)`
+- **Modularización**: menus separados en clases (`MenuGeneral`, `MenuUsuario`, `MenuAdmin`)
+
+**Modelo unificado:**
+
+- `ItemMultimedia` contiene campos comunes: `id`, `titulo`, `autor`, `album`, `genero`, `anno`, `rutaArchivo`
+- En `Cancion`: `autor` = artista, `album` = álbum
+- En `Podcast`: `autor` = host, `album` = temporada
 
 **Colecciones:**
 
@@ -104,3 +125,17 @@ java -cp "bin:lib/json-20220320.jar" es.upsa.programacion.App
 
 - Usuario: `admin`
 - Contraseña: `admin`
+
+## ℹ️ Información Adicional
+
+**Sobre este proyecto:**
+
+- README y commits generados con IA
+- Trabajo para Programación - [Universidad Pontificia de Salamanca](https://upsa.es/)
+
+## 🔗 Recursos
+
+**Tutoriales utilizados:**
+
+- [Java Sound API - Tutorial 1](https://www.youtube.com/watch?v=kSmwtbRgoDs)
+- [Java CLI Applications - Tutorial 2](https://www.youtube.com/watch?v=PmOgruSPy3s&t=640s)

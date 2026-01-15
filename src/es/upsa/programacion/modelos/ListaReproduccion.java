@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef> {
     public enum TipoItem {
         CANCION, PODCAST
@@ -51,16 +50,16 @@ public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef> {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public int getOwnerId() {
         return ownerId;
     }
 
     public List<ItemRef> getItems() {
         return new ArrayList<>(items);
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override
@@ -76,18 +75,5 @@ public class ListaReproduccion implements Iterable<ListaReproduccion.ItemRef> {
         items.add(new ItemRef(tipo, refId));
         indiceUnico.add(clave);
         return true;
-    }
-
-    public boolean removeItem(TipoItem tipo, int refId) {
-        String clave = tipo + "-" + refId;
-        for (int i = 0; i < items.size(); i++) {
-            ItemRef ref = items.get(i);
-            if (ref.getTipo() == tipo && ref.getRefId() == refId) {
-                items.remove(i);
-                indiceUnico.remove(clave);
-                return true;
-            }
-        }
-        return false;
     }
 }
