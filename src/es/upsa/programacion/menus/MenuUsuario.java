@@ -215,8 +215,8 @@ public class MenuUsuario {
     private void anadirItemLista(Usuario u) {
         System.out.print("Id lista: ");
         int listaId = Integer.parseInt(scanner.nextLine().trim());
-        ListaReproduccion lista = controlLista.obtener(listaId);
-        if (lista == null || lista.getOwnerId() != u.getId()) {
+        ListaReproduccion lista = controlLista.obtenerParaUsuario(listaId, u.getId());
+        if (lista == null) {
             System.out.println("Lista no válida");
             return;
         }
@@ -251,8 +251,8 @@ public class MenuUsuario {
     private void reproducirLista(Usuario u) {
         System.out.print("Id lista: ");
         int listaId = Integer.parseInt(scanner.nextLine().trim());
-        ListaReproduccion lista = controlLista.obtener(listaId);
-        if (lista == null || lista.getOwnerId() != u.getId()) {
+        ListaReproduccion lista = controlLista.obtenerParaUsuario(listaId, u.getId());
+        if (lista == null) {
             System.out.println("Sin acceso");
             return;
         }

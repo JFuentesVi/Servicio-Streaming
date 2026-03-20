@@ -33,8 +33,12 @@ public class ControladorLista {
         return lista;
     }
 
-    public ListaReproduccion obtener(int id) {
-        return listas.get(id);
+    public ListaReproduccion obtenerParaUsuario(int id, int usuarioId) {
+        ListaReproduccion lista = listas.get(id);
+        if (lista == null || lista.getOwnerId() != usuarioId) {
+            return null;
+        }
+        return lista;
     }
 
     public void guardarCambios() {
