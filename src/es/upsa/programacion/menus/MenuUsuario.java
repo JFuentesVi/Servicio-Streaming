@@ -39,9 +39,10 @@ public class MenuUsuario {
         System.out.println("4) Listar podcasts");
         System.out.println("5) Crear lista de reproducción");
         System.out.println("6) Ver mis listas de reproducción");
-        System.out.println("7) Añadir item a lista de reproducción");
-        System.out.println("8) Reproducir lista de reproducción");
-        System.out.println("9) Controles (siguiente/anterior/pausa)");
+        System.out.println("7) Eliminar lista de reproducción");
+        System.out.println("8) Añadir item a lista de reproducción");
+        System.out.println("9) Reproducir lista de reproducción");
+        System.out.println("10) Controles (siguiente/anterior/pausa)");
         System.out.println("0) Cerrar sesión");
         String opcion = scanner.nextLine().trim();
         switch (opcion) {
@@ -64,12 +65,15 @@ public class MenuUsuario {
                 verListasReproduccion(u);
                 break;
             case "7":
-                anadirItemLista(u);
+                eliminarLista(u);
                 break;
             case "8":
-                reproducirLista(u);
+                anadirItemLista(u);
                 break;
             case "9":
+                reproducirLista(u);
+                break;
+            case "10":
                 controlesReproductor();
                 break;
             case "0":
@@ -209,6 +213,17 @@ public class MenuUsuario {
         }
         for (ListaReproduccion l : listas) {
             System.out.println(l.getId() + " - " + l.getNombre());
+        }
+    }
+
+    private void eliminarLista(Usuario u) {
+        System.out.print("Id lista: ");
+        int listaId = Integer.parseInt(scanner.nextLine().trim());
+        boolean eliminado = controlLista.eliminar(listaId, u.getId(), u.getRol());
+        if (eliminado) {
+            System.out.println("Lista eliminada");
+        } else {
+            System.out.println("No se puede eliminar");
         }
     }
 
