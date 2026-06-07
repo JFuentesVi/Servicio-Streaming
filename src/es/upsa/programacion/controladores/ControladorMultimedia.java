@@ -2,8 +2,6 @@ package es.upsa.programacion.controladores;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-
 import es.upsa.programacion.modelos.ItemMultimedia;
 
 // Controlador base con métodos de búsqueda genéricos para ItemMultimedia

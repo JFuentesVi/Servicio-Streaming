@@ -17,13 +17,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class ReproductorAudio {
     private Clip clip;
-    private String archivoActual;
     private Long pausaEnPosicion;
     private volatile boolean estaReproduciendo = false;
 
     public void reproducir(String rutaArchivo) {
         detener();
-        this.archivoActual = rutaArchivo;
         this.pausaEnPosicion = null;
 
         try {

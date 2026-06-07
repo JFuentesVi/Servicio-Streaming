@@ -1,7 +1,5 @@
 package es.upsa.programacion.controladores;
 
-import java.util.List;
-
 import es.upsa.programacion.modelos.Podcast;
 import es.upsa.programacion.servicios.PersistenciaJSON;
 

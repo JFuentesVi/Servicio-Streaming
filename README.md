@@ -46,29 +46,32 @@ No incluye reproducción automática por lo que tras acabar una canción se debe
 
 ```
 src/
-├── App.java                    # CLI principal
-├── modelos/                    # Entidades de dominio
-│   ├── ItemMultimedia.java     # Clase abstracta base
-│   ├── Cancion.java
-│   ├── Podcast.java
-│   ├── Usuario.java
-│   ├── ListaReproduccion.java
-│   ├── Rol.java
-│   └── Reproducible.java
-├── controladores/              # Lógica de negocio
-│   ├── ControladorMultimedia.java  # Controlador genérico base
-│   ├── ControladorCancion.java
-│   ├── ControladorPodcast.java
-│   ├── ControladorUsuario.java
-│   ├── ControladorLista.java
-│   └── ControladorReproductor.java
-├── menus/                      # Interfaz CLI modular
-│   ├── MenuGeneral.java
-│   ├── MenuUsuario.java
-│   └── MenuAdmin.java
-└── servicios/                  # Persistencia y audio
-    ├── PersistenciaJSON.java
-    └── ReproductorAudio.java
+└── es/
+    └── upsa/
+        └── programacion/
+            ├── App.java                    # CLI principal
+            ├── modelos/                    # Entidades de dominio
+            │   ├── ItemMultimedia.java     # Clase abstracta base
+            │   ├── Cancion.java
+            │   ├── Podcast.java
+            │   ├── Usuario.java
+            │   ├── ListaReproduccion.java
+            │   ├── Rol.java
+            │   └── Reproducible.java
+            ├── controladores/              # Lógica de negocio
+            │   ├── ControladorMultimedia.java  # Controlador genérico base
+            │   ├── ControladorCancion.java
+            │   ├── ControladorPodcast.java
+            │   ├── ControladorUsuario.java
+            │   ├── ControladorLista.java
+            │   └── ControladorReproductor.java
+            ├── menus/                      # Interfaz CLI modular
+            │   ├── MenuGeneral.java
+            │   ├── MenuUsuario.java
+            │   └── MenuAdmin.java
+            └── servicios/                  # Persistencia y audio
+                ├── PersistenciaJSON.java
+                └── ReproductorAudio.java
 
 datos/                          # Archivos JSON
 ```
